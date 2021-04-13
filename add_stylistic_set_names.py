@@ -9,7 +9,7 @@ macIDs = {"platformID": 3, "platEncID": 1, "langID": 0x409}
 
 def add_stylistic_names(font_path, stylistic_names_path):
 
-    with open(stylistic_names_path, "r") as f:
+    with open(stylistic_names_path, "r", encoding="utf-8") as f:
         stylistic_names = json.load(f)
 
     font = TTFont(font_path)
