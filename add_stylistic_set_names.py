@@ -32,8 +32,11 @@ def add_stylistic_names(font_path, stylistic_names_path):
             params.UINameID = feature_names_ids[tag]
             featureRecord.Feature.FeatureParams = params
 
-    parts = font_path.split(".")
-    font.save(".".join(parts[:-1]) + "1." + parts[-1])
+    file_name = os.path.basename(font_path)
+    generate_dir = os.path.join(os.path.dirname(font_path), "newSSNames")
+    if not os.path.exists(generate_dir):
+        os.mkdir(generate_dir)
+    font.save(os.path.join(generate_dir, file_name))
 
 
 if __name__ == "__main__":
@@ -52,4 +55,13 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    add_stylistic_names(args.font_path, args.stylistic_names_path)
+    if os.path.isdir(args.font_path):
+        for file_name in os.listdir(args.font_path):
+            if file_name.split(".")[-1].lower() in ["otf", "ttf"]:
+                add_stylistic_names(
+                    os.path.join(args.font_path, file_name),
+                    args.stylistic_names_path,
+                )
+    else:
+        add_stylistic_names(args.font_path, args.stylistic_names_path)
+    print("Done")
